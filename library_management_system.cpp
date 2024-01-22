@@ -29,6 +29,8 @@ void setAuthor(const std::string& author) {m_author = author;}
 void setISBN(const std::string& ISBN) {m_ISBN = ISBN;} 
 void setAvailablityStatus(bool status) {m_availabilityStatus = status;} 
 
+//TODO: implement dislpay function
+
 private:
     std::string m_title{};
     std::string m_author{};
@@ -43,14 +45,47 @@ public:
 /*TODO:
     - get/list books using ISBN, author name, book name
     - check if catalog is empty <rare case>
-    - add book
-    - remove book
-    - display catalog
 */
 
+//add book in catalog
+void addBook(const Book& book)
+{
+    //TODO: what if book is already present?
+    m_catalog.push_back(book);
+    std::cout<<"Book added to the catalog.\n";
+}
+
+// remove book from catalog
+void removeBook(const std::string& ISBN)
+{   
+    for(auto index{m_catalog.begin()}; index != m_catalog.end(); ++index)
+    {
+        // if ISBN matches remove the book
+        if(index->getISBN() == ISBN){
+            m_catalog.erase(index);
+            std::cout<<"Book with ISBN: "<< ISBN << " has removed successfully\n";
+            return;
+        }
+    }
+
+    std::cout<<"Book with ISBN: "<< ISBN << " either not present in catalog or occuring problems in removing.\n";
+}
+
+// dislpay catalog
+void displayCatalog()
+{
+    for (auto &book: m_catalog)
+    {
+        // std::cout<<book;
+        std::cout<<"Title: "<<book.getTitle()<<std::endl;
+        std::cout<<"Author: "<<book.getAuthor()<<std::endl;
+        std::cout<<"ISBN no.: "<<book.getISBN()<<std::endl;
+        std::cout<<"Availability Status: "<<book.getAvailablityStatus()<<std::endl<<std::endl;
+    }
+}
+
 private:
-    std::vector<Book> m_list_of_books;      // store list of books
-    std::vector<int> m_no_of_books_available;   // no. of copies of books present
+    std::vector<Book> m_catalog{};      // store list of books
 };
 
 
@@ -58,10 +93,11 @@ int main()
 {
     Book english("10 ways to learn efficient english", "Leonardo Caprio", "345345345");
 
-    std::cout<<english.getTitle()<<std::endl;
-    std::cout<<english.getAuthor()<<std::endl;
-    std::cout<<english.getAvailablityStatus()<<std::endl;
-    std::cout<<english.getISBN()<<std::endl;
+    LibraryCatalog catalog;
+    catalog.addBook(english);
+    catalog.displayCatalog();
+    catalog.removeBook(english.getISBN());
+    catalog.displayCatalog();
 
     return 0;
 }
