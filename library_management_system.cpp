@@ -7,6 +7,7 @@ Author:- Lokesh Kaushik
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 // Book Data Structure
 class Book{
@@ -46,6 +47,34 @@ public:
     - get/list books using ISBN, author name, book name
     - check if catalog is empty <rare case>
 */
+
+//utility
+bool isEmpty()
+{
+    if(m_catalog.size() == 0)
+        return true;
+    return false;
+}
+
+//getters
+const Book* getBook(const std::string& ISBN)
+{
+    if(isEmpty())
+    {
+        std::cout<<"Catalog is empty\n";
+        return nullptr ;
+    }
+
+    for(auto &book: m_catalog)
+    {
+        // if ISBN matches remove the book
+        if(book.getISBN() == ISBN){
+            return &book;    //return book's reference
+        }
+    }
+
+    return nullptr;
+}
 
 //add book in catalog
 void addBook(const Book& book)
@@ -95,9 +124,8 @@ int main()
 
     LibraryCatalog catalog;
     catalog.addBook(english);
-    catalog.displayCatalog();
     catalog.removeBook(english.getISBN());
-    catalog.displayCatalog();
+    std::cout<<catalog.isEmpty();
 
     return 0;
 }
