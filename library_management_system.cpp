@@ -13,6 +13,9 @@ class Book{
 public:
 
 //constructor
+Book() = default;
+Book(const std::string& title, const std::string& author, const std::string& ISBN, bool available = true)
+    : m_title(title), m_author(author), m_ISBN(ISBN), m_availabilityStatus(available) {}
 
 //getters
 const std::string& getTitle() {return m_title;}
@@ -21,9 +24,9 @@ const std::string& getISBN() {return m_ISBN;}
 bool getAvailablityStatus() {return m_availabilityStatus;}
 
 //setters
-void setTitle(std::string_view title) {m_title = title;} 
-void setAuthor(std::string_view author) {m_author = author;} 
-void setISBN(std::string_view ISBN) {m_ISBN = ISBN;} 
+void setTitle(const std::string& title) {m_title = title;} 
+void setAuthor(const std::string& author) {m_author = author;} 
+void setISBN(const std::string& ISBN) {m_ISBN = ISBN;} 
 void setAvailablityStatus(bool status) {m_availabilityStatus = status;} 
 
 private:
@@ -36,12 +39,7 @@ private:
 
 int main()
 {
-    Book english;
-
-    english.setTitle("10 ways to learn efficient english.");
-    english.setAuthor("Leonardo Caprio.");
-    english.setISBN("34534535363");
-    english.setAvailablityStatus(true);
+    Book english("10 ways to learn efficient english", "Leonardo Caprio", "345345345");
 
     std::cout<<english.getTitle()<<std::endl;
     std::cout<<english.getAuthor()<<std::endl;
