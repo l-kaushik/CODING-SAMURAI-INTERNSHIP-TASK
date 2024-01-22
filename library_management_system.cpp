@@ -6,7 +6,7 @@ Author:- Lokesh Kaushik
 
 #include <iostream>
 #include <string>
-#include <string_view>
+#include <vector>
 
 // Book Data Structure
 class Book{
@@ -34,6 +34,23 @@ private:
     std::string m_author{};
     std::string m_ISBN{};
     bool m_availabilityStatus {};
+};
+
+class LibraryCatalog
+{
+public:
+
+/*TODO:
+    - get/list books using ISBN, author name, book name
+    - check if catalog is empty <rare case>
+    - add book
+    - remove book
+    - display catalog
+*/
+
+private:
+    std::vector<Book> m_list_of_books;      // store list of books
+    std::vector<int> m_no_of_books_available;   // no. of copies of books present
 };
 
 
