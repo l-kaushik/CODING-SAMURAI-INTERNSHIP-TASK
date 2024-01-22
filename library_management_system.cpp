@@ -15,9 +15,9 @@ public:
 //constructor
 
 //getters
-std::string_view getTitle() {return m_title;}
-std::string_view getAuthor() {return m_author;}
-std::string_view getISBN() {return m_ISBN;}
+const std::string& getTitle() {return m_title;}
+const std::string& getAuthor() {return m_author;}
+const std::string& getISBN() {return m_ISBN;}
 bool getAvailablityStatus() {return m_availabilityStatus;}
 
 //setters
