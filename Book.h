@@ -22,10 +22,10 @@ public:
     bool isValidISBN(const std::string& ISBN);
 
     // getters
-    const std::string &getTitle() { return m_title; }
-    const std::string &getAuthor() { return m_author; }
-    const std::string &getISBN() { return m_ISBN; }
-    bool getAvailablityStatus() { return m_availabilityStatus; }
+    const std::string &getTitle() const { return m_title; }
+    const std::string &getAuthor() const { return m_author; }
+    const std::string &getISBN() const { return m_ISBN; }
+    bool getAvailablityStatus() const { return m_availabilityStatus; }
 
     // setters
     void setTitle(const std::string &title) { m_title = title; }
