@@ -16,8 +16,15 @@ public:
     // constructor
     Book() = default;
     Book(const std::string &title, const std::string &author, const std::string &ISBN, bool available = true)
-        : m_title(title), m_author(author), m_ISBN(ISBN), m_availabilityStatus(available) {}
+        : m_title(title), m_author(author), m_ISBN(ISBN), m_availabilityStatus(available)
+    {
+        if (!isValidISBN(ISBN))
+            exit(EXIT_FAILURE);
+    }
 
+    // utility
+    bool isValidISBN(const std::string& ISBN);
+    
     // getters
     const std::string &getTitle() { return m_title; }
     const std::string &getAuthor() { return m_author; }
@@ -56,7 +63,7 @@ public:
     }
 
     // search a book
-    bool isPresent(const std::string& ISBN)
+    bool isPresent(const std::string &ISBN)
     {
         return getBook(ISBN) ? true : false;
     }
@@ -125,13 +132,59 @@ private:
     std::vector<Book> m_catalog{}; // store list of books
 };
 
+// <-------------- FUNCTIONS OF BOOK CLASS -------------->
+bool Book::isValidISBN(const std::string &ISBN)
+{
+    // check if ISBN is empty or not
+    if (ISBN.empty())
+    {
+        std::cerr << "ERROR: ISBN number cannot be empty\n";
+        return false;
+    }
+
+    // check if first letter is '-'
+    if (ISBN[0] == '-')
+    {
+        std::cerr << "ERROR: ISBN cannot start with '-'\n";
+        return false;
+    }
+
+    // check if last letter is '-'
+    if (ISBN.back() == '-')
+    {
+        std::cerr << "ERROR: ISBN cannot end with '-'\n";
+        return false;
+    }
+
+    // check if ISBN contains any invalid character
+    for (auto &eachLetter : ISBN)
+    {
+        if (!(std::isdigit(eachLetter) || eachLetter == '-'))
+        {
+            std::cerr << "ERROR: Invalid ISBN\n";
+            return false;
+        }
+    }
+
+    // check for length of ISBN
+    int digitsOnly{static_cast<int>(ISBN.length()) - 1 - static_cast<int>(std::count(ISBN.begin(), ISBN.end(), '-'))};
+
+    if (!(digitsOnly == 13 || digitsOnly == 10))
+    {
+        std::cerr << "ERROR: Length of ISBN is must be 10 or 13";
+        return false;
+    }
+
+    return true;
+}
+
 int main()
 {
-    Book english("10 ways to learn efficient english", "Leonardo Caprio", "345345345");
+    Book english("10 ways to learn efficient english", "Leonardo Caprio", "345-345-3744");
 
     LibraryCatalog catalog;
     catalog.addBook(english);
-    std::cout<<catalog.isPresent("3453345345");
+    std::cout << catalog.isPresent("3453345345");
 
     catalog.displayCatalog();
 
