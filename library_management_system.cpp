@@ -55,6 +55,12 @@ public:
         return false;
     }
 
+    // search a book
+    bool isPresent(const std::string& ISBN)
+    {
+        return getBook(ISBN) ? true : false;
+    }
+
     // getters
     const Book *getBook(const std::string &ISBN)
     {
@@ -110,7 +116,7 @@ public:
             std::cout << "Title: " << book.getTitle() << std::endl;
             std::cout << "Author: " << book.getAuthor() << std::endl;
             std::cout << "ISBN no.: " << book.getISBN() << std::endl;
-            std::cout << "Availability Status: " << book.getAvailablityStatus() << std::endl
+            std::cout << std::boolalpha << "Availability Status: " << book.getAvailablityStatus() << std::endl
                       << std::endl;
         }
     }
@@ -125,8 +131,9 @@ int main()
 
     LibraryCatalog catalog;
     catalog.addBook(english);
-    catalog.removeBook(english.getISBN());
-    std::cout << catalog.isEmpty();
+    std::cout<<catalog.isPresent("3453345345");
+
+    catalog.displayCatalog();
 
     return 0;
 }
