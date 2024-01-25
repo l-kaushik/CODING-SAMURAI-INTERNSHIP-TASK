@@ -19,6 +19,7 @@ public:
 
     // search a book
     bool isPresent(const std::string &ISBN);
+    bool isPresent(const Book& book);
 
     // getters
     const Book *getBook(const std::string &ISBN);
@@ -30,7 +31,7 @@ public:
     void removeBook(const std::string &ISBN);
 
     // dislpay catalog
-    void displayCatalog();
+    void display();
 
 private:
     std::vector<Book> m_catalog{}; // store list of books

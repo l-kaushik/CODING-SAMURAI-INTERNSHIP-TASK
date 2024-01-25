@@ -30,22 +30,26 @@ bool LibraryCatalog::isPresent(const std::string &ISBN)
 {
     return getBook(ISBN) ? true : false;
 }
+bool LibraryCatalog::isPresent(const Book &book)
+{
+    return getBook(book.getISBN()) ? true : false;
+}
 
 // getters
 const Book *LibraryCatalog::getBook(const std::string &ISBN)
 {
     if (isEmpty())
     {
-        std::cout << "Catalog is empty\n";
+        std::cout<<"hel\n";
         return nullptr;
     }
 
     for (auto &book : m_catalog)
     {
-        std::string digitsOnly {simplifyISBN(ISBN)};
+        std::string digitsOnly{simplifyISBN(ISBN)};
 
-        // if ISBN matches remove the book
-        if (simplifyISBN(book.getISBN()) == ISBN)
+        // if ISBN matches return the book
+        if (simplifyISBN(book.getISBN()) == digitsOnly)
         {
             return &book; // return book's reference
         }
@@ -57,9 +61,15 @@ const Book *LibraryCatalog::getBook(const std::string &ISBN)
 // add book in catalog
 void LibraryCatalog::addBook(const Book &book)
 {
-    // TODO: what if book is already present?
-    m_catalog.push_back(book);
-    std::cout << "Book added to the catalog.\n";
+    if(getBook(book.getISBN()) == nullptr)
+    {
+        m_catalog.push_back(book);
+        std::cout << "Book added to the catalog.\n";
+    }
+    else
+    {
+        std::cerr<<"ERROR: Duplicate book found\n";
+    }
 }
 
 // remove book from catalog
@@ -80,7 +90,7 @@ void LibraryCatalog::removeBook(const std::string &ISBN)
 }
 
 // dislpay catalog
-void LibraryCatalog::displayCatalog()
+void LibraryCatalog::display()
 {
     for (auto &book : m_catalog)
     {
