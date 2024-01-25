@@ -27,7 +27,6 @@ public:
     const std::string &getISBN() const { return m_ISBN; }
     bool getAvailablityStatus() const { return m_availabilityStatus; }
 
-protected:
     // setters
     void setTitle(const std::string &title) { m_title = title; }
     void setAuthor(const std::string &author) { m_author = author; }
