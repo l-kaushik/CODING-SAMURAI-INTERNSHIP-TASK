@@ -1,11 +1,28 @@
 #include "LibraryCatalog.h"
 
-// utility
+// UTILITY FUNCIONS
 bool LibraryCatalog::isEmpty()
 {
     if (m_catalog.size() == 0)
         return true;
     return false;
+}
+
+// return only digits from ISBN
+// eg:- 123-456-7890 = 1234567890
+
+const std::string LibraryCatalog::simplifyISBN(const std::string &ISBN)
+{
+    std::string digitsOnly(ISBN);
+    digitsOnly.erase(std::remove(digitsOnly.begin(), digitsOnly.end(), '-'), digitsOnly.end());
+    return digitsOnly;
+}
+
+const std::string LibraryCatalog::simplifyISBN(const Book &book)
+{
+    std::string digitsOnly(book.getISBN());
+    digitsOnly.erase(std::remove(digitsOnly.begin(), digitsOnly.end(), '-'), digitsOnly.end());
+    return digitsOnly;
 }
 
 // search a book
@@ -15,7 +32,7 @@ bool LibraryCatalog::isPresent(const std::string &ISBN)
 }
 
 // getters
-const Book* LibraryCatalog::getBook(const std::string &ISBN)
+const Book *LibraryCatalog::getBook(const std::string &ISBN)
 {
     if (isEmpty())
     {
@@ -25,8 +42,10 @@ const Book* LibraryCatalog::getBook(const std::string &ISBN)
 
     for (auto &book : m_catalog)
     {
+        std::string digitsOnly {simplifyISBN(ISBN)};
+
         // if ISBN matches remove the book
-        if (book.getISBN() == ISBN)
+        if (simplifyISBN(book.getISBN()) == ISBN)
         {
             return &book; // return book's reference
         }

@@ -12,9 +12,7 @@ int main()
 
     LibraryCatalog catalog;
     catalog.addBook(english);
-    std::cout << catalog.isPresent("3453345345");
-
-    catalog.displayCatalog();
+    std::cout << catalog.isPresent("3453453744");
 
     return 0;
 }

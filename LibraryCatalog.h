@@ -14,6 +14,8 @@ public:
 
     // utility
     bool isEmpty();
+    const std::string simplifyISBN(const std::string &ISBN);
+    const std::string simplifyISBN(const Book& book);
 
     // search a book
     bool isPresent(const std::string &ISBN);
