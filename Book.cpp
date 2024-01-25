@@ -1,6 +1,5 @@
 #include "Book.h"
 
-
 bool Book::isValidISBN(const std::string &ISBN)
 {
     // check if ISBN is empty or not
