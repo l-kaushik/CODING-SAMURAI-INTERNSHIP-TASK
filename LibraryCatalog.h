@@ -15,11 +15,11 @@ public:
     // utility
     bool isEmpty();
     const std::string simplifyISBN(const std::string &ISBN);
-    const std::string simplifyISBN(const Book& book);
+    const std::string simplifyISBN(const Book &book);
 
     // search a book
     bool isPresent(const std::string &ISBN);
-    bool isPresent(const Book& book);
+    bool isPresent(const Book &book);
 
     // getters
     const Book *getBook(const std::string &ISBN);
@@ -30,8 +30,9 @@ public:
     // remove book from catalog
     void removeBook(const std::string &ISBN);
 
-    // dislpay catalog
-    void display();
+    // dislpay
+    // void display();
+    void display(const std::string &title = "");
 
 private:
     std::vector<Book> m_catalog{}; // store list of books
