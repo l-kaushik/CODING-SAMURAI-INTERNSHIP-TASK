@@ -91,6 +91,7 @@ void LibraryCatalog::removeBook(const std::string &ISBN)
 // dislpay catalog
 void LibraryCatalog::display(const std::string &title)
 {
+    std::cout<<"---------------------------------------------\n";
     for (auto &book : m_catalog)
     {
         // if title is present then display only books with same title otherwise display all books
@@ -100,8 +101,9 @@ void LibraryCatalog::display(const std::string &title)
             std::cout << "Title: " << book.getTitle() << std::endl;
             std::cout << "Author: " << book.getAuthor() << std::endl;
             std::cout << "ISBN no.: " << book.getISBN() << std::endl;
-            std::cout << std::boolalpha << "Availability Status: " << book.getAvailablityStatus() << std::endl
-                    << std::endl;
+            std::cout << std::boolalpha << "Availability Status: " << book.getAvailablityStatus() << std::endl;
+            std::cout<<"---------------------------------------------\n";
+    
         }
     }
 }
