@@ -16,9 +16,9 @@ int main()
     catalog.addBook(english);
     catalog.addBook(hindi);
     catalog.addBook(maths);
-    
-    catalog.borrowBook(english.getISBN());
-    catalog.display("hello world");
 
+    catalog.borrowBook(english.getISBN());
+    catalog.returnBook(english.getISBN());
+    catalog.borrowBook(english.getISBN());
     return 0;
 }

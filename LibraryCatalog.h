@@ -38,7 +38,9 @@ public:
     void borrowBook(Book &book);
 
     //return book
-
+    void returnBook(const std::string &ISBN);
+    void returnBook(Book &book);
+    
     // dislpay
     void display(const std::string &title = "");
 

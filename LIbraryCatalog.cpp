@@ -81,7 +81,7 @@ const Book *LibraryCatalog::getBook(const std::string &ISBN)
     return nullptr;
 }
 
-Book* LibraryCatalog::m_getBook(const std::string &ISBN)
+Book *LibraryCatalog::m_getBook(const std::string &ISBN)
 {
     if (isEmpty())
     {
@@ -147,6 +147,25 @@ void LibraryCatalog::borrowBook(const std::string &ISBN)
 void LibraryCatalog::borrowBook(Book &book)
 {
     borrowBook(book.getISBN());
+}
+
+// return book
+void LibraryCatalog::returnBook(const std::string &ISBN)
+{
+    if (isPresent(ISBN))
+    {
+        m_getBook(ISBN)->setAvailablityStatus(true);
+        std::cout<<"Book returned successfully\n";
+    }
+    else
+    {
+        std::cerr << "ERROR: Book Not Found\n";
+    }
+}
+
+void LibraryCatalog::returnBook(Book &book)
+{
+    returnBook(book.getISBN());
 }
 
 // dislpay catalog
