@@ -36,14 +36,13 @@ bool LibraryCatalog::isPresent(const Book &book)
 }
 
 // check availability
-bool LibraryCatalog::isAvailable(const std::string &ISBN)
+bool LibraryCatalog::isBookAvailable(const std::string &ISBN)
 {
     auto book = getBook(ISBN);
     if (book)
     {
         if (book->getAvailablityStatus())
         {
-            std::cout << "Book is available right now\n";
             return true;
         }
 
@@ -55,9 +54,9 @@ bool LibraryCatalog::isAvailable(const std::string &ISBN)
     return false;
 }
 
-bool LibraryCatalog::isAvailable(const Book &book)
+bool LibraryCatalog::isBookAvailable(const Book &book)
 {
-    return isAvailable(book.getISBN());
+    return isBookAvailable(book.getISBN());
 }
 
 // getters
@@ -79,6 +78,26 @@ const Book *LibraryCatalog::getBook(const std::string &ISBN)
         }
     }
 
+    return nullptr;
+}
+
+Book* LibraryCatalog::m_getBook(const std::string &ISBN)
+{
+    if (isEmpty())
+    {
+        return nullptr;
+    }
+
+    for (auto &book : m_catalog)
+    {
+        std::string digitsOnly{simplifyISBN(ISBN)};
+
+        // if ISBN matches return the book
+        if (simplifyISBN(book.getISBN()) == digitsOnly)
+        {
+            return &book; // return book's address
+        }
+    }
     return nullptr;
 }
 
@@ -113,17 +132,35 @@ void LibraryCatalog::removeBook(const std::string &ISBN)
     std::cout << "Book with ISBN: " << ISBN << " either not present in catalog or occuring problems in removing.\n";
 }
 
+void LibraryCatalog::borrowBook(const std::string &ISBN)
+{
+    if (isBookAvailable(ISBN))
+    {
+        m_getBook(ISBN)->setAvailablityStatus(false);
+        std::cout << "Book borrowed successfully\n";
+    }
+    else
+    {
+        std::cout << "ERROR: Book cannot be borrowed\n";
+    }
+}
+void LibraryCatalog::borrowBook(Book &book)
+{
+    borrowBook(book.getISBN());
+}
+
 // dislpay catalog
 void LibraryCatalog::display(const std::string &title)
 {
-    bool once {false};
+    bool once{false};
 
     for (auto &book : m_catalog)
     {
         // if title is present then display only books with same title otherwise display all books
         if (title == "" || (title != "" && book.getTitle() == title))
         {
-            if(!once){
+            if (!once)
+            {
                 std::cout << "---------------------------------------------\n";
                 once = true;
             }

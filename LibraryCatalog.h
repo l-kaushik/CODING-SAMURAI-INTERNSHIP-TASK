@@ -9,7 +9,6 @@ class LibraryCatalog
 public:
     /*TODO:
         - get/list books using ISBN
-        - check if catalog is empty <rare case>
     */
 
     // utility
@@ -22,8 +21,8 @@ public:
     bool isPresent(const Book &book);
 
     //check availability of a book
-    bool isAvailable(const std::string &ISBN);
-    bool isAvailable(const Book &book);
+    bool isBookAvailable(const std::string &ISBN);
+    bool isBookAvailable(const Book &book);
 
     // getters
     const Book *getBook(const std::string &ISBN);
@@ -34,12 +33,20 @@ public:
     // remove book from catalog
     void removeBook(const std::string &ISBN);
 
+    //borrow book
+    void borrowBook(const std::string &ISBN);
+    void borrowBook(Book &book);
+
+    //return book
+
     // dislpay
-    // void display();
     void display(const std::string &title = "");
 
 private:
     std::vector<Book> m_catalog{}; // store list of books
+
+    // getter that can modify values    
+    Book* m_getBook(const std::string &ISBN);
 };
 
 #endif
