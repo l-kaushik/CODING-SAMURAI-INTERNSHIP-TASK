@@ -21,6 +21,10 @@ public:
     bool isPresent(const std::string &ISBN);
     bool isPresent(const Book &book);
 
+    //check availability of a book
+    bool isAvailable(const std::string &ISBN);
+    bool isAvailable(const Book &book);
+
     // getters
     const Book *getBook(const std::string &ISBN);
 

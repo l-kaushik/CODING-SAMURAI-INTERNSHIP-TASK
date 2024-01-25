@@ -17,7 +17,7 @@ int main()
     catalog.addBook(hindi);
     catalog.addBook(maths);
     
-    catalog.display("10 ways to");
+    catalog.isAvailable(hindi);
 
     return 0;
 }

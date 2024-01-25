@@ -35,6 +35,31 @@ bool LibraryCatalog::isPresent(const Book &book)
     return getBook(book.getISBN()) ? true : false;
 }
 
+// check availability
+bool LibraryCatalog::isAvailable(const std::string &ISBN)
+{
+    auto book = getBook(ISBN);
+    if (book)
+    {
+        if (book->getAvailablityStatus())
+        {
+            std::cout << "Book is available right now\n";
+            return true;
+        }
+
+        std::cout << "Book is not available right now\n";
+        return false;
+    }
+
+    std::cerr << "ERROR: Book Not Found\n";
+    return false;
+}
+
+bool LibraryCatalog::isAvailable(const Book &book)
+{
+    return isAvailable(book.getISBN());
+}
+
 // getters
 const Book *LibraryCatalog::getBook(const std::string &ISBN)
 {
@@ -91,19 +116,18 @@ void LibraryCatalog::removeBook(const std::string &ISBN)
 // dislpay catalog
 void LibraryCatalog::display(const std::string &title)
 {
-    std::cout<<"---------------------------------------------\n";
+    std::cout << "---------------------------------------------\n";
     for (auto &book : m_catalog)
     {
         // if title is present then display only books with same title otherwise display all books
-        if(title == "" || (title != "" && book.getTitle() == title))
+        if (title == "" || (title != "" && book.getTitle() == title))
         {
             // std::cout<<book;
             std::cout << "Title: " << book.getTitle() << std::endl;
             std::cout << "Author: " << book.getAuthor() << std::endl;
             std::cout << "ISBN no.: " << book.getISBN() << std::endl;
             std::cout << std::boolalpha << "Availability Status: " << book.getAvailablityStatus() << std::endl;
-            std::cout<<"---------------------------------------------\n";
-    
+            std::cout << "---------------------------------------------\n";
         }
     }
 }
