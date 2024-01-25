@@ -36,7 +36,6 @@ bool Book::isValidISBN(const std::string &ISBN)
 
     // check for length of ISBN
     int digitsOnly{static_cast<int>(ISBN.length()) - static_cast<int>(std::count(ISBN.begin(), ISBN.end(), '-'))};
-    std::cout<<digitsOnly<<std::endl;
 
     if (!(digitsOnly == 13 || digitsOnly == 10))
     {
