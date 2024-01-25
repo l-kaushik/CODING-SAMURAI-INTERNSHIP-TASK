@@ -9,10 +9,15 @@ Author:- Lokesh Kaushik
 int main()
 {
     Book english("10 ways to learn efficient english", "Leonardo Caprio", "345-345-3744");
+    Book hindi("10 ways to speak hindi", "Leonardo Caprio", "345-345-3244");
+    Book maths("10 ways to learn maths", "Leonardo Caprio", "345-345-3344");
 
     LibraryCatalog catalog;
     catalog.addBook(english);
-    std::cout << catalog.isPresent("3453453744");
+    catalog.addBook(hindi);
+    catalog.addBook(maths);
+    
+    catalog.display("10 ways to");
 
     return 0;
 }

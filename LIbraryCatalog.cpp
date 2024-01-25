@@ -40,7 +40,6 @@ const Book *LibraryCatalog::getBook(const std::string &ISBN)
 {
     if (isEmpty())
     {
-        std::cout<<"hel\n";
         return nullptr;
     }
 
@@ -61,14 +60,14 @@ const Book *LibraryCatalog::getBook(const std::string &ISBN)
 // add book in catalog
 void LibraryCatalog::addBook(const Book &book)
 {
-    if(getBook(book.getISBN()) == nullptr)
+    if (getBook(book.getISBN()) == nullptr)
     {
         m_catalog.push_back(book);
         std::cout << "Book added to the catalog.\n";
     }
     else
     {
-        std::cerr<<"ERROR: Duplicate book found\n";
+        std::cerr << "ERROR: Duplicate book found\n";
     }
 }
 
@@ -90,15 +89,19 @@ void LibraryCatalog::removeBook(const std::string &ISBN)
 }
 
 // dislpay catalog
-void LibraryCatalog::display()
+void LibraryCatalog::display(const std::string &title)
 {
     for (auto &book : m_catalog)
     {
-        // std::cout<<book;
-        std::cout << "Title: " << book.getTitle() << std::endl;
-        std::cout << "Author: " << book.getAuthor() << std::endl;
-        std::cout << "ISBN no.: " << book.getISBN() << std::endl;
-        std::cout << std::boolalpha << "Availability Status: " << book.getAvailablityStatus() << std::endl
-                  << std::endl;
+        // if title is present then display only books with same title otherwise display all books
+        if(title == "" || (title != "" && book.getTitle() == title))
+        {
+            // std::cout<<book;
+            std::cout << "Title: " << book.getTitle() << std::endl;
+            std::cout << "Author: " << book.getAuthor() << std::endl;
+            std::cout << "ISBN no.: " << book.getISBN() << std::endl;
+            std::cout << std::boolalpha << "Availability Status: " << book.getAvailablityStatus() << std::endl
+                    << std::endl;
+        }
     }
 }
