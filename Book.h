@@ -5,10 +5,15 @@
 #include <string>
 #include <algorithm>
 
+bool isValidISBN(const std::string &ISBN);
+
 // Book Data Structure
 class Book
 {
 public:
+    // friend functions
+    friend bool isValidISBN(const std::string &ISBN);
+
     // constructor
     Book() = default;
     Book(const std::string &title, const std::string &author, const std::string &ISBN, bool available = true)
@@ -17,9 +22,6 @@ public:
         if (!isValidISBN(ISBN))
             exit(EXIT_FAILURE);
     }
-
-    // utility
-    bool isValidISBN(const std::string& ISBN);
 
     // getters
     const std::string &getTitle() const { return m_title; }
@@ -41,5 +43,8 @@ private:
     std::string m_ISBN{};
     bool m_availabilityStatus{};
 };
+
+// create a book
+Book createBook();
 
 #endif
