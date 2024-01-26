@@ -1,6 +1,7 @@
 #include "Book.h"
+#include <limits>
 
-bool Book::isValidISBN(const std::string &ISBN)
+bool isValidISBN(const std::string &ISBN)
 {
     // check if ISBN is empty or not
     if (ISBN.empty())
@@ -43,4 +44,55 @@ bool Book::isValidISBN(const std::string &ISBN)
     }
 
     return true;
+}
+
+//create a book
+Book createBook()
+{
+    // clearing input buffer
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    std::string title{}, author{}, ISBN{};
+    int status;
+
+    // validating ISBN number
+    while (true)
+    {
+        std::cout << "Enter ISBN: ";
+        try
+        {
+            std::getline(std::cin, ISBN);
+            if (!isValidISBN(ISBN))
+                throw std::invalid_argument("ERROR: Your ISBN is invalid\n");
+            break;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cerr << e.what() << "\n\n";
+        }
+    }
+
+    std::cout << "Enter title: ";
+    std::getline(std::cin, title);
+    std::cout << "Enter author: ";
+    std::getline(std::cin, author);
+
+    // validating status
+    while (true)
+    {
+        std::cout << "Enter status(1 for available and 0 for not available): ";
+        try
+        {
+            std::cin >> status;
+            if (status != 1 && status != 0)
+                throw std::invalid_argument("ERROR: Invalid input, try again\n");
+            break;
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << "\n\n";
+        }
+    }
+
+    return Book(title, author, ISBN, status);
 }
