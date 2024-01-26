@@ -51,4 +51,6 @@ private:
     Book* m_getBook(const std::string &ISBN);
 };
 
+// main menu function
+void menu();
 #endif

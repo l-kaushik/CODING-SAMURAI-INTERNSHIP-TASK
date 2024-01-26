@@ -155,7 +155,7 @@ void LibraryCatalog::returnBook(const std::string &ISBN)
     if (isPresent(ISBN))
     {
         m_getBook(ISBN)->setAvailablityStatus(true);
-        std::cout<<"Book returned successfully\n";
+        std::cout << "Book returned successfully\n";
     }
     else
     {
@@ -171,6 +171,11 @@ void LibraryCatalog::returnBook(Book &book)
 // dislpay catalog
 void LibraryCatalog::display(const std::string &title)
 {
+    if(isEmpty()){
+        std::cout<<"Catalog is empty\n";
+        return;
+    }
+    
     bool once{false};
 
     for (auto &book : m_catalog)
