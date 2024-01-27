@@ -46,19 +46,19 @@ bool isValidISBN(const std::string &ISBN)
     return true;
 }
 
-//create a book
+// create a book
 Book createBook()
 {
     // clearing input buffer
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::string title{}, author{}, ISBN{};
-    int status;
+    int status{};
 
     // validating ISBN number
     while (true)
     {
-        std::cout << "Enter ISBN: ";
+        std::cout << "\nEnter ISBN: ";
         try
         {
             std::getline(std::cin, ISBN);
@@ -68,7 +68,7 @@ Book createBook()
         }
         catch (const std::invalid_argument &e)
         {
-            std::cerr << e.what() << "\n\n";
+            continue;
         }
     }
 
@@ -81,16 +81,21 @@ Book createBook()
     while (true)
     {
         std::cout << "Enter status(1 for available and 0 for not available): ";
-        try
+        std::cin >> status;
+
+        if (std::cin.fail() || (status != 1 && status != 0))
         {
-            std::cin >> status;
-            if (status != 1 && status != 0)
-                throw std::invalid_argument("ERROR: Invalid input, try again\n");
-            break;
+            std::cerr << "ERROR: Invlaid input, try again\n\n";
+
+            // Clear the error flag
+            std::cin.clear();
+
+            // Ignore any remaining characters in the buffer
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
-        catch (const std::exception &e)
+        else
         {
-            std::cerr << e.what() << "\n\n";
+            break;
         }
     }
 
