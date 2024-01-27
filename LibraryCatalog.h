@@ -3,14 +3,13 @@
 
 #include "Book.h"
 #include <vector>
+#include <fstream>
+#include <chrono>
+#include <ctime>
 
 class LibraryCatalog
 {
 public:
-    /*TODO:
-        - get/list books using ISBN
-    */
-
     // utility
     bool isEmpty();
     const std::string simplifyISBN(const std::string &ISBN);
@@ -46,6 +45,9 @@ public:
     
     // dislpay
     void display(const std::string &title = "");
+
+    //Export to a file
+    bool exportToText();
 
 private:
     std::vector<Book> m_catalog{}; // store list of books
