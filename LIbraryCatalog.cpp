@@ -59,6 +59,24 @@ bool LibraryCatalog::isBookAvailable(const Book &book)
     return isBookAvailable(book.getISBN());
 }
 
+// alter availablility of a book
+void LibraryCatalog::alterAvailable(const std::string& ISBN)
+{
+    // get book
+    Book* book = m_getBook(ISBN);
+
+    if(book == nullptr)
+    {
+        std::cerr << "ERROR: Book with ISBN number " << ISBN << " is not present in catalog\n";
+        return;
+    }
+
+    if(book->getAvailablityStatus())
+        book->setAvailablityStatus(false);
+    else
+        book->setAvailablityStatus(true);
+}
+
 // getters
 const Book *LibraryCatalog::getBook(const std::string &ISBN)
 {
