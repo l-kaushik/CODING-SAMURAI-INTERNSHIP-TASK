@@ -60,18 +60,18 @@ bool LibraryCatalog::isBookAvailable(const Book &book)
 }
 
 // alter availablility of a book
-void LibraryCatalog::alterAvailable(const std::string& ISBN)
+void LibraryCatalog::alterAvailable(const std::string &ISBN)
 {
     // get book
-    Book* book = m_getBook(ISBN);
+    Book *book = m_getBook(ISBN);
 
-    if(book == nullptr)
+    if (book == nullptr)
     {
         std::cerr << "ERROR: Book with ISBN number " << ISBN << " is not present in catalog\n";
         return;
     }
 
-    if(book->getAvailablityStatus())
+    if (book->getAvailablityStatus())
         book->setAvailablityStatus(false);
     else
         book->setAvailablityStatus(true);
@@ -189,11 +189,12 @@ void LibraryCatalog::returnBook(Book &book)
 // dislpay catalog
 void LibraryCatalog::display(const std::string &title)
 {
-    if(isEmpty()){
-        std::cout<<"Catalog is empty\n";
+    if (isEmpty())
+    {
+        std::cout << "Catalog is empty\n";
         return;
     }
-    
+
     bool once{false};
 
     for (auto &book : m_catalog)
@@ -215,4 +216,44 @@ void LibraryCatalog::display(const std::string &title)
             std::cout << "---------------------------------------------\n";
         }
     }
+}
+
+auto getCurrentTime()
+{
+    // getting current time point (durations)
+    auto now {std::chrono::system_clock::now()};
+
+    // converting time point to a time_t object (converting durations into seconds)
+    std::time_t currentTime {std::chrono::system_clock::to_time_t(now)};
+
+    // converting time_t object to tm struct (converting seconds into human readable form)
+    std:: tm *localtime = std::localtime(&currentTime);
+
+    return std::asctime(localtime);
+}
+
+bool LibraryCatalog::exportToText()
+{
+    std::ofstream outputFile("LibraryCatalog.txt", std::ios::app);
+
+    if (!outputFile.is_open())
+    {
+        return false;
+    }
+
+    outputFile << "\nExport Time: " << getCurrentTime();
+
+    outputFile << "---------------------------------------------\n";
+
+    for (auto &eachBook : m_catalog)
+    {
+        outputFile << "Title: " << eachBook.getTitle() << std::endl;
+        outputFile << "Author: " << eachBook.getAuthor() << std::endl;
+        outputFile << "ISBN no.: " << eachBook.getISBN() << std::endl;
+        outputFile << std::boolalpha << "Availability Status: " << eachBook.getAvailablityStatus() << std::endl;
+        outputFile << "---------------------------------------------\n";
+    }
+    outputFile.close();
+
+    return true;
 }
