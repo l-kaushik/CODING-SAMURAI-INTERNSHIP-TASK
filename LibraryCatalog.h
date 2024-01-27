@@ -24,6 +24,9 @@ public:
     bool isBookAvailable(const std::string &ISBN);
     bool isBookAvailable(const Book &book);
 
+    //alter availability of a book
+    void alterAvailable(const std::string &ISBN);
+
     // getters
     const Book *getBook(const std::string &ISBN);
 
