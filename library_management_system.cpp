@@ -5,7 +5,7 @@ Author:- Lokesh Kaushik
 */
 
 #include "LibraryCatalog.h"
-#include "stdexcept"
+#include <stdexcept>
 
 // display menu
 void displayMenu()
@@ -45,7 +45,22 @@ int isvalidChoice(std::string &choice)
     return -1;
 }
 
-void performAction(LibraryCatalog& catalog, int option)
+// this function will take instatnce of object and pointer to memeber function to call them
+void proocessFunctionCall(LibraryCatalog &catalog, void (LibraryCatalog::*memberFunction)(const std::string &), std::string &temp)
+{
+    while (true)
+    {
+        std::cout << "Enter ISBN number of book: ";
+        std::cin >> temp;
+        if (isValidISBN(temp))
+        {
+            (catalog.*memberFunction)(temp);
+            break;
+        }
+    }
+}
+
+void performAction(LibraryCatalog &catalog, int option)
 {
     std::string temp{};
     switch (option)
@@ -54,28 +69,10 @@ void performAction(LibraryCatalog& catalog, int option)
         catalog.addBook(createBook());
         break;
     case 2:
-        while (true)
-        {
-            std::cout << "Enter ISBN number of book: ";
-            std::cin >> temp;
-            if (isValidISBN(temp))
-            {
-                catalog.borrowBook(temp);
-                break;
-            }
-        }
+        proocessFunctionCall(catalog,&LibraryCatalog::borrowBook,temp);
         break;
     case 3:
-        while (true)
-        {
-            std::cout << "Enter ISBN number of book: ";
-            std::cin >> temp;
-            if (isValidISBN(temp))
-            {
-                catalog.returnBook(temp);
-                break;
-            }
-        }
+       proocessFunctionCall(catalog,&LibraryCatalog::returnBook,temp);
         break;
     case 4:
         catalog.display();
@@ -94,16 +91,7 @@ void performAction(LibraryCatalog& catalog, int option)
         }
         break;
     case 6:
-        while (true)
-        {
-            std::cout << "Enter ISBN number of book: ";
-            std::cin >> temp;
-            if (isValidISBN(temp))
-            {
-                catalog.removeBook(temp);
-                break;
-            }
-        }
+       proocessFunctionCall(catalog,&LibraryCatalog::removeBook,temp);
         break;
     case 7:
         exit(EXIT_SUCCESS);
