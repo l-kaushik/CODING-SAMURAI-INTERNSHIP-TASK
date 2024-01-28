@@ -6,6 +6,7 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>
+#include <stdexcept>
 
 class LibraryCatalog
 {
@@ -45,6 +46,9 @@ public:
     
     // dislpay
     void display(const std::string &title = "");
+
+    //Import from a file
+    bool importFromText();
 
     //Export to a file
     bool exportToText();

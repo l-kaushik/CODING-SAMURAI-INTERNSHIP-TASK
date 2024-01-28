@@ -221,16 +221,89 @@ void LibraryCatalog::display(const std::string &title)
 auto getCurrentTime()
 {
     // getting current time point (durations)
-    auto now {std::chrono::system_clock::now()};
+    auto now{std::chrono::system_clock::now()};
 
     // converting time point to a time_t object (converting durations into seconds)
-    std::time_t currentTime {std::chrono::system_clock::to_time_t(now)};
+    std::time_t currentTime{std::chrono::system_clock::to_time_t(now)};
 
     // converting time_t object to tm struct (converting seconds into human readable form)
-    std:: tm *localtime = std::localtime(&currentTime);
+    std::tm *localtime = std::localtime(&currentTime);
 
     return std::asctime(localtime);
 }
+
+bool LibraryCatalog::importFromText()
+{
+    std::ifstream inputFile("LibraryCatalog.txt");
+
+    if (!inputFile.is_open())
+    {
+        return false;
+    }
+
+    // this will store each line read from inputFile stream
+    std::string line{};
+
+    // store position of cursor in line
+    std::size_t pos{};
+
+    // temporary variables to store read data
+    std::string title{}, author{}, ISBN{};
+    bool status_code{};
+    int entries_read{};
+
+    while (std::getline(inputFile, line))
+    {
+
+        // skip empty line, export time and dashed line
+        if (line == "" || line.find("Export Time: ") != std::string::npos || line.find("----") != std::string::npos)
+        {
+            continue;
+        }
+
+        // skip "Title: " and save rest of data till \n in title variable
+        if ((pos = line.find("Title: ")) != std::string::npos)
+        {
+            title = line.substr(pos + 7, line.find('\n'));
+            line.erase(pos); // erasing already read data from line
+            entries_read++;
+        }
+
+        if ((pos = line.find("Author: ")) != std::string::npos)
+        {
+            author = line.substr(pos + 8, line.find('\n'));
+            line.erase(pos);
+            entries_read++;
+        }
+
+        if ((pos = line.find("ISBN no.: ")) != std::string::npos)
+        {
+            ISBN = line.substr(pos + 10, line.find('\n'));
+            line.erase(pos);
+            entries_read++;
+        }
+
+        if ((pos = line.find("Availability Status: ")) != std::string::npos)
+        {
+            if ((line.substr(pos + 21, line.find('\n'))) == "true")
+                status_code = true;
+            else
+                status_code = false;
+            line.erase(pos);
+            entries_read++;
+        }
+
+        if (entries_read == 4)
+        {
+            addBook(Book(title, author, ISBN, status_code));
+            entries_read = 0;
+            std::cout << std::endl;
+        }
+    }
+    inputFile.close();
+
+    return true;
+};
 
 bool LibraryCatalog::exportToText()
 {
@@ -247,10 +320,10 @@ bool LibraryCatalog::exportToText()
 
     for (auto &eachBook : m_catalog)
     {
-        outputFile << "Title: " << eachBook.getTitle() << std::endl;
-        outputFile << "Author: " << eachBook.getAuthor() << std::endl;
-        outputFile << "ISBN no.: " << eachBook.getISBN() << std::endl;
-        outputFile << std::boolalpha << "Availability Status: " << eachBook.getAvailablityStatus() << std::endl;
+        outputFile << "Title: " << eachBook.getTitle() << '\n';
+        outputFile << "Author: " << eachBook.getAuthor() << '\n';
+        outputFile << "ISBN no.: " << eachBook.getISBN() << '\n';
+        outputFile << std::boolalpha << "Availability Status: " << eachBook.getAvailablityStatus() << '\n';
         outputFile << "---------------------------------------------\n";
     }
     outputFile.close();
