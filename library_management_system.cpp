@@ -5,7 +5,6 @@ Author:- Lokesh Kaushik
 */
 
 #include "LibraryCatalog.h"
-#include <stdexcept>
 
 // display menu
 void displayMenu()
@@ -21,7 +20,7 @@ void displayMenu()
               << "8. Export to a file\n"
               << "9. Remove a book\n"
               << "10. Exit\n\n"
-              << "Choose an option(1-7): ";
+              << "Choose an option(1-10): ";
 }
 
 int isvalidChoice(std::string &choice)
@@ -58,8 +57,7 @@ T processFunctionCall(LibraryCatalog &catalog, T (LibraryCatalog::*memberFunctio
         std::cin >> temp;
         if (isValidISBN(temp))
         {
-            (catalog.*memberFunction)(temp);
-            return T;
+            return (catalog.*memberFunction)(temp);
         }
     }
 }
@@ -96,11 +94,17 @@ void performAction(LibraryCatalog &catalog, int option)
         break;
     // import from a file
     case 7:
-        // function call for importing from a file
+        if(catalog.importFromText())
+            std::cout<<"Data has been import successfully.\n";
+        else
+            std::cerr<<"ERROR: File not opening.\n";
         break;
     // export to a file
     case 8:
-        // function call for exporting to a file
+        if(catalog.exportToText())
+            std::cout<<"Data has been written to the file.\n";
+        else
+            std::cerr<<"ERROR: File not opening.\n";
         break;
     // remove a book
     case 9:
