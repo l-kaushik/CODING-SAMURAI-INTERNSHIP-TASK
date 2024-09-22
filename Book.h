@@ -27,13 +27,13 @@ public:
     const std::string &getTitle() const { return m_title; }
     const std::string &getAuthor() const { return m_author; }
     const std::string &getISBN() const { return m_ISBN; }
-    bool getAvailablityStatus() const { return m_availabilityStatus; }
+    bool getAvailabilityStatus() const { return m_availabilityStatus; }
 
     // setters
     void setTitle(const std::string &title) { m_title = title; }
     void setAuthor(const std::string &author) { m_author = author; }
     void setISBN(const std::string &ISBN) { m_ISBN = ISBN; }
-    void setAvailablityStatus(bool status) { m_availabilityStatus = status; }
+    void setAvailabilityStatus(bool status) { m_availabilityStatus = status; }
 
     // TODO: implement dislpay function
 
