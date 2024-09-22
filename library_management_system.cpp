@@ -23,13 +23,13 @@ void displayMenu()
               << "Choose an option(1-10): ";
 }
 
-int isvalidChoice(std::string &choice)
+int isvalidChoice(std::string &choice, int end, int start = 1)
 {
     try
     {
         int value = std::stoi(choice);
-        if (value > 10 || value < 1)
-            throw std::out_of_range("Value should be between 1 and 10");
+        if (value > end || value < start)
+            throw std::out_of_range("Value should be between " + std::to_string(end) + " and " + std::to_string(start) + "\n");
 
         return value;
     }
@@ -59,6 +59,83 @@ T processFunctionCall(LibraryCatalog &catalog, T (LibraryCatalog::*memberFunctio
         {
             return (catalog.*memberFunction)(temp);
         }
+    }
+}
+
+std::string getFileName()
+{
+    std::string fileName{};
+
+    while (true)
+    {
+        try
+        {
+            std::cout << "Enter a file name without extension or press enter to continue with default name: ";
+            std::getline(std::cin, fileName);
+
+            if (fileName.empty())
+            {
+                //TODO: check if file with default name is already present
+                return "LibraryCatalog"s;
+            }
+
+            // Check if the file name doesn't have an extension
+            size_t dotPos = fileName.find_last_of('.');
+            if (dotPos != std::string::npos)
+                throw std::ios_base::failure("File name should not have an extension.\n\n");
+
+            return fileName;
+        }
+        catch (const std::ios_base::failure &e)
+        {
+            // Clear the error state
+            std::cin.clear();
+
+            // Ignore the rest of the input buffer to handle invalid input
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            std::cerr << e.what();
+        }
+    }
+}
+
+template <typename T>
+// arguments:- <catalog reference, option no., import/export to/from text, import/export to/from binary, filename>
+T processFileOperationCalls(LibraryCatalog &catalog, int option, T (LibraryCatalog::*operationInText)(const std::string &), T (LibraryCatalog::*operationInBinary)(const std::string &), const std::string &fileName)
+{
+    switch (option)
+    {
+    case 1:
+        return (catalog.*operationInText)(fileName);
+    case 2:
+        return (catalog.*operationInBinary)(fileName);
+    default:
+        return T();
+    }
+}
+
+bool processFileOptions(LibraryCatalog &catalog,const std::string &op)
+{
+    std::string choice{};
+
+    while (true)
+    {
+        std::cout << "\n\n\t\tChoose an " + op + " operation\n\n"
+                  << "1. " + op + " from a text file\n"
+                  << "2. " + op + " from a bin file\n"
+                  << "3. Exit\n\n"
+                  << "Choose an option(1-3): ";
+        std::cin >> choice;
+
+        int option{isvalidChoice(choice, 3)};
+
+        // std::string fileName {getFileName()};
+        std::string fileName{"LibraryCatalog"};
+
+        if (op == "import")
+            return processFileOperationCalls(catalog, option, &LibraryCatalog::importFromText, &LibraryCatalog::importFromBinary, fileName);
+        else
+            return processFileOperationCalls(catalog, option, &LibraryCatalog::exportToText, &LibraryCatalog::exportToBinary, fileName);
     }
 }
 
@@ -94,17 +171,11 @@ void performAction(LibraryCatalog &catalog, int option)
         break;
     // import from a file
     case 7:
-        if(catalog.importFromText())
-            std::cout<<"Data has been import successfully.\n";
-        else
-            std::cerr<<"ERROR: File not opening.\n";
+        processFileOptions(catalog, "import"s);
         break;
     // export to a file
     case 8:
-        if(catalog.exportToText())
-            std::cout<<"Data has been written to the file.\n";
-        else
-            std::cerr<<"ERROR: File not opening.\n";
+        processFileOptions(catalog, "export"s);
         break;
     // remove a book
     case 9:
@@ -130,12 +201,9 @@ void menu()
         displayMenu();
         std::cin >> choice;
 
-        int option = isvalidChoice(choice);
+        int option = isvalidChoice(choice, 10);
 
-        if (option > 0)
-        {
-            performAction(catalog, option);
-        }
+        performAction(catalog, option);
     }
 }
 
