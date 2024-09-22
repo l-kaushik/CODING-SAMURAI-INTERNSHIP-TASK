@@ -8,6 +8,8 @@
 #include <ctime>
 #include <stdexcept>
 
+using namespace std::string_literals; // for s literal
+
 class LibraryCatalog
 {
 public:
@@ -48,10 +50,12 @@ public:
     void display(const std::string &title = "");
 
     //Import from a file
-    bool importFromText();
+    bool importFromText(const std::string &fileName);
+    bool importFromBinary(const std::string &fileName);
 
     //Export to a file
-    bool exportToText();
+    bool exportToText(const std::string &fileName);
+    bool exportToBinary(const std::string &fileName);
 
 private:
     std::vector<Book> m_catalog{}; // store list of books
